@@ -9,10 +9,11 @@ import java.util.Arrays;
 public class Tester {
 
     public static void main(String[] args) {
-        String head = makeHeader();
+        String start = startHTML();
+        String end = endHTML();
 
-        testApplyMask();
-        testConcatenate();
+        testApplyMask(start, end);
+        /*testConcatenate();
         testContains();
         testCumulativeSums();
         testElementwiseSums();
@@ -20,12 +21,11 @@ public class Tester {
         testIsSorted();
         testReverse();
         testMerge();
-        testScale();
-        htmlListBuilder("[1, 2, 3, 4, 5]");
+        testScale();*/
     }
 
-    public static String makeHeader() {
-        String head = "<!DOCTYPE html>"
+    public static String startHTML() {
+        String start = "<!DOCTYPE html>"
                 + "<html>"
                 + "<head>"
                 + "<title>Array Utils</title>"
@@ -33,6 +33,8 @@ public class Tester {
                 + "table, tr, th, td {"
                 + "border: thin black solid;"
                 + "border-collapse: collapse;"
+                + "padding: 10px;"
+                + "margin: 10px;"
                 + "}"
                 + "ul {"
                 + "float: left;"
@@ -41,80 +43,94 @@ public class Tester {
                 + "</head>"
                 + "<body>";
 
-        return head;
+        return start;
     }
 
-    public static String makeTable(String methodName, String description, String input1, String input2, String expectedRes, String actualRes) {
+    public static String endHTML() {
+        String end = "</body></html>";
+        return end;
+    }
+
+    //if input 2 doesn't exist or isn't an array, send 'null' as input2
+    public static String makeTable(String methodName, String testID, String description, String input1, String input2, String expectedRes, String actualRes, String startHTML, String endHTML) {
         boolean pass = false;
+        // ** Not working **
+        // [1, 3, 4] & [1, 3, 4] return false
         if (expectedRes == actualRes) {
             pass = true;
         }
-        String table = "<h1> Method: " + methodName + "</h1>";
-        table += "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
-        table += "<tr><td>" + methodName + "</td><td>" + description + "</td><td>";
+        
+        System.out.println(expectedRes);
+        System.out.println(actualRes);
+        System.out.println(pass);
+        String listStr = "";
 
-        //if input 2 == null or 0
-        //only call the array listify for input1
-        //else call for both
-        table += "</td><td>expectedRes</td><td>" + actualRes + "</td><td>" + pass + "</td></tr>";
-        return "";
+        //store in list string
+        listStr += htmlListBuilder(input1);
+
+        //this check won't necessarily work because sometimes there is a second argument that isn't an array
+        if (input2 != null) {
+            //store this in a string
+            listStr += htmlListBuilder(input2);
+        }
+
+        String table = startHTML;
+        table += "<h1> Method: " + methodName + "</h1>";
+        table += "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
+        table += "<tr><td>" + testID + "</td><td>" + description + "</td><td>";
+        table += listStr;
+        table += "</td><td>" + expectedRes + "</td><td>" + actualRes + "</td><td>" + pass + "</td></tr>";
+        table += endHTML;
+        return table;
     }
 
     public static String htmlListBuilder(String str) {
+        // Removing '[' from front and ']' from back of string
         String subStr = str.substring(1, str.length() - 1);
-        System.out.println(subStr);
+        // Splitting string into an array
         String[] splitStr = subStr.split(", ");
-        
-        String list = "<ul>";
-        
+
+        String list = "<ul>"; // Starting list
+
         for (int i = 0; i < splitStr.length; i++) {
-            list += "<li>" + splitStr[i] + "</li>";
+            list += "<li>" + splitStr[i] + "</li>"; // Printing each item from array to the list
         }
-        list += "</ul>";
-        System.out.println(list);
-        //list += "<li>" ++  "<  / li > <li>2</li > <li>3</li > <li>4</li > <li>5</li > <     / ul > <ul> < li > true <  / li > <li>false</li > <li>true</li > <li>true</li > <li>";
-        //false</li >
-        //list += "</ul>";
+
+        list += "</ul>"; // Ending list
+
         return list;
     }
 
-    public static String testApplyMask() {
+    public static String testApplyMask(String header, String end) {
         int[] testArr = {1, 2, 3, 4, 5};
         boolean[] testMask = {true, false, true, true, false};
-        String result = "",
-                methodName = "applyMask";
 
         int[] returnedArr = ArrayUtils.applyMask(testArr, testMask);
+        String res = Arrays.toString(returnedArr);
 
-        String listArr = "",
-                maskArr = "";
+        // Variables for testing
+        String methodName = "applyMask",
+                testID = methodName + "-1",
+                description = "Creates a new array by applying a boolean mask to an input array.",
+                input1 = Arrays.toString(testArr),
+                input2 = Arrays.toString(testMask),
+                expectedRes = "[1, 3, 4]",
+                actualRes = res;
 
-        for (int i = 0, length = testArr.length; i < length; i++) {
-            listArr += "<li>" + testArr[i] + "</li>";
-            // Might have to put in it's own loop since testArr/maskArr could have diff lengths
-            maskArr += "<li>" + testMask[i] + "</li>";
-        }
-
-        result = "<h1>Method: " + methodName + "<h1>";
-        result += "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
-        result += "<tr><td>" + methodName + "</td><td>Testing shit?</td><td>"
-                + "<ul>" + listArr + "</ul>"
-                + "<ul>" + maskArr + "</ul>"
-                + "</td><td>Something</td><td>Something2</td><td>OfCourse</td></tr>";
-        System.out.println(result);
-        System.out.println("Apply Mask: " + Arrays.toString(returnedArr));
-        return result;
+        String table = makeTable(methodName, testID, description, input1, input2, expectedRes, actualRes, header, end);
+        System.out.println(table);
+        
+        return table;
     }
 
     public static String testConcatenate() {
         int[] testArrA = {1, 2, 3},
                 testArrB = {4, 5, 6};
-        String result = "";
 
         // Catching concatenated array from method
         int[] returnedArr = ArrayUtils.concatenate(testArrA, testArrB);
         // Converting array to string
-        result = Arrays.toString(returnedArr);
+        String result = Arrays.toString(returnedArr);
 
         System.out.println("Concatenate: " + result);
         return result;
