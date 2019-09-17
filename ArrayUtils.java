@@ -20,31 +20,41 @@ public class ArrayUtils {
     public static int[] applyMask(int[] arr, boolean[] mask) {
         // Declare empty global String   
         String str = "";
+        boolean allFalse = true;
 
         // Checking if sent in arguments lengths match
         if (arr.length != mask.length) {
             // Should return empty array/false
-            System.out.println("Argument lengths don't match..");
+            //System.out.println("Argument lengths don't match..");
             return new int[0];
         } else {
+
             for (int i = 0, length = mask.length; i < length; i++) {
                 int arrValue = arr[i];
                 boolean maskValue = mask[i];
                 // If mask[] has a true element, put that arr[] element in a string
                 if (maskValue) {
                     str += arrValue + ",";
+                    allFalse = false;
                 }
             }
         } // End of if/else
+        int[] intArr;
+        //if not all elements of the boolean array are false, parse ints
+        if (!allFalse) {
+            // Creates new array from split string
+            String[] strArr = str.split(",");
+            // Creates new int array with size of string array
+            intArr = new int[strArr.length];
 
-        // Creates new array from split string
-        String[] strArr= str.split(",");
-        // Creates new int array with size of string array
-        int[] intArr= new int[strArr.length];
-
-        // Converting each string element to an int and storing in int array
-        for (int i = 0; i < strArr.length; i++) {
-            intArr[i] = Integer.parseInt(strArr[i]);
+            // Converting each string element to an int and storing in int array
+            for (int i = 0; i < strArr.length; i++) {
+                intArr[i] = Integer.parseInt(strArr[i]);
+            }
+        } 
+        //all elements of the array are false, the returned array will be empty
+        else {
+            return new int[0];
         }
 
         return intArr;
@@ -231,16 +241,16 @@ public class ArrayUtils {
      */
     public static int[] merge(int[] arrA, int[] arrB) {
         int[] combinedArr = new int[arrA.length + arrB.length];
-        
+
         for (int i = 0; i < arrA.length; i++) {
             combinedArr[i] = arrA[i];
         }
         for (int j = arrA.length; j < combinedArr.length; j++) {
             combinedArr[j] = arrB[j - arrA.length];
         }
-        
+
         quickSort(combinedArr, 0, combinedArr.length - 1);
-        
+
         return combinedArr;
     }
 
@@ -266,18 +276,18 @@ public class ArrayUtils {
             if (arr[j] < pivot) {
                 i++;    // increment index of smaller element
                 // Swapping index i and j
-                int temp = arr[i]; 
+                int temp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = temp;
             }
         }
-        
+
         // Swapping index high for (i + 1)
         int temp1 = arr[high];
         arr[high] = arr[i + 1];
         arr[i + 1] = temp1;
-        
-    return (i + 1);
+
+        return (i + 1);
     }
 
     /**
@@ -313,7 +323,7 @@ public class ArrayUtils {
      */
     public static int[] scale(int[] arr, int scalar) {
         int[] scaledArr = new int[arr.length];
-        
+
         for (int i = 0, length = arr.length; i < length; i++) {
             int temp = arr[i];
             temp *= scalar;

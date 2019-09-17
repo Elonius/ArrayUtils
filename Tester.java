@@ -54,28 +54,29 @@ public class Tester {
     //if input 2 doesn't exist or isn't an array, send 'null' as input2
     public static String makeTable(String methodName, String testID, String description, String input1, String input2, String expectedRes, String actualRes, String startHTML, String endHTML) {
         boolean pass = false;
-        // ** Not working **
-        // [1, 3, 4] & [1, 3, 4] return false
-        if (expectedRes == actualRes) {
+        // Checks to see if expected result and actual result match
+        if (expectedRes.equals(actualRes)) {
             pass = true;
         }
-        
-        System.out.println(expectedRes);
-        System.out.println(actualRes);
-        System.out.println(pass);
         String listStr = "";
 
-        //store in list string
+        // Store in list string
         listStr += htmlListBuilder(input1);
 
-        //this check won't necessarily work because sometimes there is a second argument that isn't an array
+        // This check won't necessarily work because sometimes there is a second argument that isn't an array
         if (input2 != null) {
             //store this in a string
             listStr += htmlListBuilder(input2);
         }
+        String table ="";
+        if (!startHTML.equals("")){
+            table = startHTML;
+        }
+        
+        if (!methodName.equals("")) {
+            table += "<h1> Method: " + methodName + "</h1>";
+        }
 
-        String table = startHTML;
-        table += "<h1> Method: " + methodName + "</h1>";
         table += "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
         table += "<tr><td>" + testID + "</td><td>" + description + "</td><td>";
         table += listStr;
@@ -102,24 +103,102 @@ public class Tester {
     }
 
     public static String testApplyMask(String header, String end) {
+        // Variables for testing
         int[] testArr = {1, 2, 3, 4, 5};
         boolean[] testMask = {true, false, true, true, false};
-
+        int counter = 1;
+        // Returned array from ArrayUtils
         int[] returnedArr = ArrayUtils.applyMask(testArr, testMask);
         String res = Arrays.toString(returnedArr);
 
-        // Variables for testing
+        //test 1
         String methodName = "applyMask",
-                testID = methodName + "-1",
-                description = "Creates a new array by applying a boolean mask to an input array.",
+                description = "Perfect case, both arrays same length.",
+                testID = methodName + "-" + counter,
                 input1 = Arrays.toString(testArr),
                 input2 = Arrays.toString(testMask),
                 expectedRes = "[1, 3, 4]",
                 actualRes = res;
 
-        String table = makeTable(methodName, testID, description, input1, input2, expectedRes, actualRes, header, end);
-        System.out.println(table);
+        String testOne = makeTable(methodName, testID, description, input1, input2, expectedRes, actualRes, header, "");
+        System.out.println(testOne);
+        counter++;
+
+        //test 2
+        //mismatched lengths should return an empty array
+        int[] testArr2 = {1, 2, 5, 4};
+        boolean[] testMask2 = {true, false, true, true, false};
+        int[] returnedArr2 = ArrayUtils.applyMask(testArr2, testMask2);
+        String res2 = Arrays.toString(returnedArr2);
+
+        testID = methodName + "-" + counter;
+        description = "Sending in a different sized integer array.";
+        input1 = Arrays.toString(testArr2);
+        input2 = Arrays.toString(testMask2);
+        expectedRes = "[]";
+        actualRes = res2;
+        counter++;
+
+        String testTwo = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testTwo);
         
+        //test 3
+        //mismatched lengths should return an empty array
+        int[] testArr3 = {1, 2, 5, 4};
+        boolean[] testMask3 = {true, false, true};
+        int[] returnedArr3 = ArrayUtils.applyMask(testArr3, testMask3);
+        String res3 = Arrays.toString(returnedArr3);
+
+        testID = methodName + "-" + counter;
+        description = "Sending in a different sized Boolean array.";
+        input1 = Arrays.toString(testArr3);
+        input2 = Arrays.toString(testMask3);
+        expectedRes = "[]";
+        actualRes = res3;
+
+        String testThree = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testThree);
+        counter++;
+        
+        //test 4
+        //mismatched lengths should return an empty array
+        int[] testArr4 = {1, 2, 5, 4};
+        boolean[] testMask4 = {true, true, true, true};
+        int[] returnedArr4 = ArrayUtils.applyMask(testArr4, testMask4);
+        String res4 = Arrays.toString(returnedArr4);
+
+        testID = methodName + "-" + counter;
+        description = "All elements of Boolean array are true.";
+        input1 = Arrays.toString(testArr4);
+        input2 = Arrays.toString(testMask4);
+        expectedRes = "[1, 2, 5, 4]";
+        actualRes = res4;
+
+        String testFour = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testFour);
+        counter++;
+        
+        //test 5
+        //mismatched lengths should return an empty array
+        int[] testArr5 = {1, 2, 5, 4};
+        boolean[] testMask5 = {false, false, false, false};
+        int[] returnedArr5 = ArrayUtils.applyMask(testArr5, testMask5);
+        String res5 = Arrays.toString(returnedArr5);
+
+        testID = methodName + "-" + counter;
+        description = "All elements of Boolean array are false.";
+        input1 = Arrays.toString(testArr5);
+        input2 = Arrays.toString(testMask5);
+        expectedRes = "[]";
+        actualRes = res5;
+
+        String testFive = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", end);
+        System.out.println(testFive);
+
+
+        // Add on to table with testTwo, testThree, etc
+        String table = testOne + testTwo + testThree + testFour + testFive;
+
         return table;
     }
 
