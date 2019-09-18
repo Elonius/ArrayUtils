@@ -289,11 +289,42 @@ public class Tester {
         System.out.println(testOne);
         counter++;
 
-        // int[] testArr = {7, 2, 8, 3};
-        // int testScalar = 5;
+        // test 2
+        // mismatched lengths should return an empty array
+        int[] testArr2 = { 1, 2, 5, 4, 5 };
+        int scalar2 = -5;
+        int[] returnedArr2 = ArrayUtils.scale(testArr2, scalar2);
+        String res2 = Arrays.toString(returnedArr2);
 
-        // int[] scaledArr = ArrayUtils.scale(testArr, testScalar);
-        // System.out.println("Scale " + Arrays.toString(scaledArr));
+        testID = methodName + "-" + counter;
+        description = "Scaling the array by -5";
+        input1 = Arrays.toString(testArr2);
+        input2 = Integer.toString(scalar2);
+        expectedRes = "[-5, -10, -25, -20, -25]";
+        actualRes = res2;
+
+        String testTwo = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testTwo);
+        counter++;
+
+        // test 3
+        // mismatched lengths should return an empty array
+        int[] testArr3 = { 1, 2, 5, 4, 5 };
+        int scalar3 = 0;
+        int[] returnedArr3 = ArrayUtils.scale(testArr3, scalar3);
+        String res3 = Arrays.toString(returnedArr3);
+
+        testID = methodName + "-" + counter;
+        description = "Scaling the array by 0";
+        input1 = Arrays.toString(testArr3);
+        input2 = Integer.toString(scalar3);
+        expectedRes = "[0, 0, 0, 0, 0]";
+        actualRes = res3;
+
+        String testThree = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testThree);
+        counter++;
+
         return testOne;
     }
 
