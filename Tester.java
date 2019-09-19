@@ -12,13 +12,15 @@ public class Tester {
         String start = startHTML();
         String end = endHTML();
 
-        testApplyMask(start, end);
+        // testApplyMask(start, end);
         /*
          * testConcatenate(); testContains(); testCumulativeSums();
          * testElementwiseSums(); testFrequency(); testIsSorted(); testReverse();
-         * testMerge();
+         * 
          */
-        testScale(start, end);
+        // testScale(start, end);
+        testMerge();
+
     }
 
     public static String startHTML() {
@@ -68,7 +70,8 @@ public class Tester {
         table += "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
         table += "<tr><td>" + testID + "</td><td>" + description + "</td><td>";
         table += listStr;
-        table += "</td><td>" + expectedRes + "</td><td>" + actualRes + "</td><td>" + pass + "</td></tr></table>";
+        table += "</td><td>" + expectedRes + "</td><td>" + actualRes + "</td><td>" + pass
+                + "</td></tr>"/* "</table>" */;
         table += endHTML;
         return table;
     }
@@ -263,12 +266,59 @@ public class Tester {
     }
 
     public static String testMerge() {
-        int[] testArr = { 10, 80, 30, 90, 40, 50 };
-        int[] testArr2 = { 13, 85, 33, 70, 43, 52, 79 };
+        int[] inputOneTestOne = { 1, 4, 7 };
+        int[] inputTwoTestOne = { 6, 5, 3 };
+        int counter = 1;
+        int[] returnedArr = ArrayUtils.merge(inputOneTestOne, inputTwoTestOne);
+        String res = Arrays.toString(returnedArr);
 
-        int[] returnedArr = ArrayUtils.merge(testArr, testArr2);
-        System.out.println("Merge: " + Arrays.toString(returnedArr));
-        return Arrays.toString(returnedArr);
+        // test 1
+        String methodName = "merge", description = "Scale array up by 5x.", testID = methodName + "-" + counter,
+                input1 = Arrays.toString(inputOneTestOne), input2 = Arrays.toString(inputTwoTestOne),
+                expectedRes = "[1, 3, 4, 5, 6, 7]", actualRes = res;
+
+        String testOne = makeTable(methodName, testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testOne);
+        counter++;
+
+        // test 2
+        // mismatched lengths and negative numbers
+        int[] inputOneTestTwo = { 1, 4, 7, -5, -7, 8 };
+        int[] inputTwoTestTwo = { 6, 5, 3 };
+        int[] returnedArrTwo = ArrayUtils.merge(inputOneTestTwo, inputTwoTestTwo);
+        String res2 = Arrays.toString(returnedArrTwo);
+
+        testID = methodName + "-" + counter;
+        description = "Mismatched arrays and negative numbers";
+        input1 = Arrays.toString(inputOneTestTwo);
+        input2 = Arrays.toString(inputTwoTestTwo);
+        expectedRes = "[-7, -5, 1, 3, 4, 5, 6, 7, 8]";
+        actualRes = res2;
+
+        String testTwo = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testTwo);
+        counter++;
+
+        // test 3
+        // both arrays empty
+        int[] inputOneTestThree = {};
+        int[] inputTwoTestThree = {};
+        int[] returnedArrThree = ArrayUtils.merge(inputOneTestThree, inputTwoTestThree);
+        String res3 = Arrays.toString(returnedArrThree);
+
+        testID = methodName + "-" + counter;
+        description = "Mismatched arrays and negative numbers";
+        input1 = Arrays.toString(inputOneTestThree);
+        input2 = Arrays.toString(inputTwoTestThree);
+        expectedRes = "[]";
+        actualRes = res3;
+
+        String testThree = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        System.out.println(testThree);
+        counter++;
+
+        System.out.println(Arrays.toString(returnedArr));
+        return testOne + testTwo + testThree;
     }
 
     public static String testScale(String header, String end) {
@@ -325,7 +375,7 @@ public class Tester {
         System.out.println(testThree);
         counter++;
 
-        return testOne;
+        return testOne + testTwo + testThree;
     }
 
 }
