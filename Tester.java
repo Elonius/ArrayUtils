@@ -9,24 +9,23 @@ import java.util.Arrays;
 public class Tester {
 
     public static void main(String[] args) {
-        String start = startHTML();            
+        String start = startHTML();
 
         String applyMaskHTML = testApplyMask() + "</table>";
         String mergeHTML = "<table>" + testMerge() + "</table>";
         String concatenateHTML = "<table>" + testConcatenate() + "</table>";
         String containsHTML = "<table>" + testContains() + "</table>";
-        
+
         /*
          * testConcatenate(); testContains(); testCumulativeSums();
          * testElementwiseSums(); testFrequency(); testIsSorted(); testReverse();
          * 
          */
-        
         //last test method
         String scaleHTML = "<table>" + testScale();
-        
+
         String end = endHTML();
-        String output = start + applyMaskHTML + concatenateHTML + containsHTML + mergeHTML + scaleHTML+ end;
+        String output = start + applyMaskHTML + concatenateHTML + containsHTML + mergeHTML + scaleHTML + end;
         System.out.println(output);
     }
 
@@ -250,7 +249,7 @@ public class Tester {
 
         // Test 1
         String methodName = "contains",
-                description = "Perfect case, sending in two arrays.",
+                description = "Perfect case, He loves it lol.",
                 testID = methodName + "-" + counter,
                 input1 = Arrays.toString(testArr1),
                 input2 = Integer.toString(testKey1),
@@ -259,8 +258,27 @@ public class Tester {
 
         String testOne = makeTable(methodName, testID, description, input1, input2, expectedRes, actualRes, "", "");
         counter++;
-        
-        return testOne;
+
+        // Test 2
+        int[] testArr2 = {1, 2, 3, 4, 5, 4, 2, 0};
+        int testKey2 = 6;
+
+        // Returned array from ArrayUtils
+        boolean[] returnedBool2 = {ArrayUtils.contains(testArr2, testKey2)};
+        String res2 = Arrays.toString(returnedBool2);
+
+        description = "Perfect case, He loves it lol.";
+        testID = methodName + "-" + counter;
+        input1 = Arrays.toString(testArr2);
+        input2 = Integer.toString(testKey2);
+        expectedRes = "[false]";
+        actualRes = res2;
+
+        String testTwo = makeTable("", testID, description, input1, input2, expectedRes, actualRes, "", "");
+        counter++;
+        String table = testOne + testTwo;
+
+        return table;
     }
 
     public static String testCumulativeSums() {
