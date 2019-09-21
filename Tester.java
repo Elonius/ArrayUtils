@@ -2,10 +2,6 @@ package arrayUtils;
 
 import java.util.Arrays;
 
-/**
- *
- * @author shawn
- */
 public class Tester {
 
     public static void main(String[] args) {
@@ -18,13 +14,14 @@ public class Tester {
         String cumulativeSumsHTML = tableHeader + testCumulativeSums() + "</table>";
         String elementwiseSumsHTML = tableHeader + testElementwiseSums() + "</table>";
         String frequencyHTML = tableHeader + testFrequency() + "</table>";
+        String isSortedHTML = tableHeader + testIsSorted() + "</table>";
         String reverseHTML = tableHeader + testReverse() + "</table>";
         String mergeHTML = tableHeader + testMerge() + "</table>";
         String scaleHTML = tableHeader + testScale();
 
         String end = endHTML();
 
-        String output = start + applyMaskHTML + concatenateHTML + containsHTML + cumulativeSumsHTML + elementwiseSumsHTML + frequencyHTML + reverseHTML + mergeHTML + scaleHTML + end;
+        String output = start + applyMaskHTML + concatenateHTML + containsHTML + cumulativeSumsHTML + elementwiseSumsHTML + frequencyHTML + isSortedHTML + reverseHTML + mergeHTML + scaleHTML + end;
         System.out.println(output);
     }
 
@@ -32,7 +29,6 @@ public class Tester {
         String start = "<!DOCTYPE html>" + "<html>" + "<head>" + "<title>Array Utils</title>" + "<style>"
                 + "table, tr, th, td {" + "border: thin black solid;" + "border-collapse: collapse;" + "padding: 10px;"
                 + "margin: 10px;" + "}" + "ul {" + "float: left;" + "}" + "</style>" + "</head>" + "<body>";
-        //+ "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
 
         return start;
     }
@@ -69,20 +65,15 @@ public class Tester {
             listStr += "<ul> <li>" + input2 + "</ul> </li>";
         }
         String table = "";
-        /*if (!startHTML.equals("")) {
-            table = startHTML;
-        }*/
 
         if (!methodName.equals("")) {
             table += "<h1> Method: " + methodName + "</h1>";
         }
 
-        //table += "<table><tr><th>Test ID</th><th>Description</th><th>Inputs</th><th>Expected Result</th><th>Actual Result</th><th>Pass?</th></tr>";
         table += "<tr><td>" + testID + "</td><td>" + description + "</td><td>";
         table += listStr;
         table += "</td><td>" + expectedRes + "</td><td>" + actualRes + "</td><td>" + pass
-                + "</td></tr>"/* "</table>" */;
-        //table += endHTML;
+                + "</td></tr>";
         return table;
     }
 
@@ -524,13 +515,77 @@ public class Tester {
         return table;
     }
 
-    public static boolean testIsSorted() {
-        int[] testArr = {1, 2, 3, 4, 5};
+    public static String testIsSorted() {
+        // Variables for testing
+        int[] testArr1 = {1, 2, 3, 4, 5};
+        int counter = 1;
 
-        boolean result = ArrayUtils.isSorted(testArr);
+        // Returned result from ArrayUtils
+        boolean returnedBool1 = ArrayUtils.isSorted(testArr1);
+        String res1 = Boolean.toString(returnedBool1);
+        //String[] strArr1 = {res1};
 
-        System.out.println("Is Sorted: " + result);
-        return result;
+        // Test 1
+        String methodName = "isSorted",
+                description = "Sending in a sorted array.",
+                testID = methodName + "-" + counter,
+                input1 = Arrays.toString(testArr1),
+                expectedRes = "true",
+                actualRes = res1;
+
+        String testOne = makeTable(methodName, testID, description, input1, "", expectedRes, actualRes);
+        counter++;
+
+        // Test 2
+        int[] testArr2 = {1, 2, 3, 5, 4};
+
+        // Returned result from ArrayUtils
+        boolean returnedBool2 = ArrayUtils.isSorted(testArr2);
+        String res2 = Boolean.toString(returnedBool2);
+
+        description = "Sending in an unsorted array.";
+        testID = methodName + "-" + counter;
+        input1 = Arrays.toString(testArr2);
+        expectedRes = "false";
+        actualRes = res2;
+
+        String testTwo = makeTable("", testID, description, input1, "", expectedRes, actualRes);
+        counter++;
+
+        // Test 3
+        int[] testArr3 = {-3, -2, -1, 0, 1, 2, 3};
+
+        // Returned result from ArrayUtils
+        boolean returnedBool3 = ArrayUtils.isSorted(testArr3);
+        String res3 = Boolean.toString(returnedBool3);
+
+        description = "Sending in a sorted array with negative numbers.";
+        testID = methodName + "-" + counter;
+        input1 = Arrays.toString(testArr3);
+        expectedRes = "true";
+        actualRes = res3;
+
+        String testThree = makeTable("", testID, description, input1, "", expectedRes, actualRes);
+        counter++;
+
+        // Test 4
+        int[] testArr4 = new int[0];
+
+        // Returned result from ArrayUtils
+        boolean returnedBool4 = ArrayUtils.isSorted(testArr4);
+        String res4 = Boolean.toString(returnedBool4);
+
+        description = "Sending in an empty array.";
+        testID = methodName + "-" + counter;
+        input1 = Arrays.toString(testArr4);
+        expectedRes = "false";
+        actualRes = res4;
+
+        String testFour = makeTable("", testID, description, input1, "", expectedRes, actualRes);
+        counter++;
+
+        String table = testOne + testTwo + testThree + testFour;
+        return table;
     }
 
     public static String testReverse() {
