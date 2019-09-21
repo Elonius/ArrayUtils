@@ -51,8 +51,7 @@ public class ArrayUtils {
             for (int i = 0; i < strArr.length; i++) {
                 intArr[i] = Integer.parseInt(strArr[i]);
             }
-        } 
-        //all elements of the array are false, the returned array will be empty
+        } //all elements of the array are false, the returned array will be empty
         else {
             return new int[0];
         }
@@ -126,9 +125,13 @@ public class ArrayUtils {
         // New array with size equal to sent in array
         int[] newArr = new int[arr.length];
 
-        newArr[0] = arr[0]; // Add first index of array to new array
-        int firstTwo = arr[0] + arr[1]; // Sum first two numbers of sent in array
-        newArr[1] = firstTwo; // Add that summed value to second spot in new array
+        if (arr.length == 0) {
+            return new int[0];
+        } else {
+            newArr[0] = arr[0]; // Add first index of array to new array
+            int firstTwo = arr[0] + arr[1]; // Sum first two numbers of sent in array
+            newArr[1] = firstTwo; // Add that summed value to second spot in new array
+        }
 
         // Loop array starting at the third number
         for (int i = 2, length = arr.length; i < length; i++) {
@@ -169,7 +172,7 @@ public class ArrayUtils {
                 // Sum elements and add element to new array
                 newArr[i] = numA + numB;
             }
-            // If they don't match, return an empty array ** might delete **
+            // If they don't match, return an empty array
         } else {
             newArr = new int[0];
         }
@@ -205,15 +208,12 @@ public class ArrayUtils {
      * <strong>false</strong> otherwise.
      */
     public static boolean isSorted(int[] arr) {
-        // Manually sort the array into a new array
-        // Then compare both arrays to eachother
-        // ??
-
         boolean result = true;
-
-        for (int i = 0, length = arr.length; i < length; i++) {
-            // Stops loop so it doesn't check last element with nothing
-            if (i != (length - 1)) {
+        if (arr.length == 0) {
+            result = false;
+        } else {
+            // arr.length - 1 stops loop so it doesn't check last element with nothing
+            for (int i = 0, length = arr.length - 1; i < length; i++) {
                 int temp = arr[i],
                         nextTemp = arr[i + 1];
                 // If left side number is greater than right side number - false
@@ -329,6 +329,7 @@ public class ArrayUtils {
             temp *= scalar;
             scaledArr[i] = temp;
         }
+
         return scaledArr;
     }
 
